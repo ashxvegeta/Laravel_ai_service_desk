@@ -15,6 +15,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', fn () => 'Admin Area');
 });
 
+Route::get('/debug-auth', function () {
+    return [
+        'id' => auth()->id(),
+        'email' => auth()->user()?->email,
+        'role' => auth()->user()?->role,
+    ];
+})->middleware('auth');
+
+
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
