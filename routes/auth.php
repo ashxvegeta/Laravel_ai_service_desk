@@ -64,8 +64,7 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     // user create ticket
-    Route::post('/tickets',TicketController::class,'store')->name('tickets.store');
-
+    Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
     // view single ticket
     Route::get('/tickets/{ticket}',[TicketController::class,'show'])->name('tickets.show');
 
