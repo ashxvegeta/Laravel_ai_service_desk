@@ -10,18 +10,11 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TicketController;
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', fn () => 'Admin Area');
-});
 
-Route::get('/debug-auth', function () {
-    return [
-        'id' => auth()->id(),
-        'email' => auth()->user()?->email,
-        'role' => auth()->user()?->role,
-    ];
-})->middleware('auth');
+
+
 
 
 Route::middleware('guest')->group(function () {
@@ -69,4 +62,18 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+    // user create ticket
+    Route::post('/tickets',TicketController::class,'store')->name('tickets.store');
+
+    // view single ticket
+    Route::get('/tickets/{ticket}',[TicketController::class,'show'])->name('tickets.show');
+
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', fn () => 'Admin Area');
+    // admin view all tickets
+    Route::get('/admin/tickets',[TicketController::class,'index'])->name('admin.index');
+    Route::put('/tickets/{ticket}',[TicketController::class,'update'])->name('tickets.update');
 });
