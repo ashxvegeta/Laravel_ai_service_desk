@@ -22,7 +22,7 @@ class TicketController extends Controller
     // user create a ticket
     public function store(Request $request){
         // validate request
-        $request->validdate([
+        $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
