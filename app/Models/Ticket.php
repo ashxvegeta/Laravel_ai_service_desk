@@ -23,6 +23,6 @@ class Ticket extends Model
     // Relationship with Comment model Each Ticket has MANY Comments
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->latest();
     }
 }
