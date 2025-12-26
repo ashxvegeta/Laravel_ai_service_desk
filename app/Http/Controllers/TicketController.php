@@ -40,12 +40,13 @@ class TicketController extends Controller
     /**
      * User/Admin: View a single ticket
      */ 
-    public function show($id){
-        // Users can only see their own tickets
-        if(auth()->user()->role !=='admin' && $tickets->user_id !== auth()->id()){
+    public function show(Ticket $ticket)
+    {
+        // If not admin, allow only owner
+        if (auth()->user()->role !== 'admin' && $ticket->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
-
         }
+
         return view('tickets.show', compact('ticket'));
     }
 

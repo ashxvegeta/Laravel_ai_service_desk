@@ -15,7 +15,10 @@
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-800">
-                                    {{ $ticket->title }}
+                                    <a href="{{ route('tickets.show', $ticket) }}">
+    <strong>{{ $ticket->title }}</strong>
+</a>
+
                                 </h3>
                                 <p class="text-sm text-gray-500">
                                     User: {{ $ticket->user->email }}
