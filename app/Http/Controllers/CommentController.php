@@ -14,15 +14,11 @@ class CommentController extends Controller
         $request->validate([
             'body' => 'required|string',
         ]);
-
         // authorization: user owns the ticket or admin
-        if(auth()->user()->role !== 'admin' && $ticket->user_id !== auth()->id()){
-           
-
-        }{
+        if (auth()->user()->role !== 'admin' && $ticket->user_id !== auth()->id()
+        ) {
             abort(403, 'Unauthorized action.');
         }
-
         Comment::create([
             'ticket_id' => $ticket->id,
             'user_id' => auth()->id(),
