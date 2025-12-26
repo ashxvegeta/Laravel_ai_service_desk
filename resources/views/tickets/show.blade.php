@@ -6,7 +6,9 @@
     </x-slot>
 
     <div class="py-10">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-8">
+
+            <!-- ================= TICKET INFO ================= -->
             <div class="bg-white shadow-lg rounded-2xl p-8">
 
                 <!-- Title -->
@@ -16,6 +18,7 @@
 
                 <!-- Status & Priority -->
                 <div class="flex flex-wrap gap-4 mb-6">
+                    <!-- Status -->
                     <span class="
                         px-3 py-1 text-sm font-semibold rounded-full
                         @if($ticket->status === 'open') bg-blue-100 text-blue-700
@@ -26,6 +29,7 @@
                         {{ ucfirst(str_replace('_', ' ', $ticket->status)) }}
                     </span>
 
+                    <!-- Priority -->
                     <span class="
                         px-3 py-1 text-sm font-semibold rounded-full
                         @if($ticket->priority === 'low') bg-gray-100 text-gray-700
@@ -46,8 +50,64 @@
                         {{ $ticket->description }}
                     </p>
                 </div>
+            </div>
+
+            <!-- ================= COMMENTS ================= -->
+            <div class="bg-white shadow-lg rounded-2xl p-8">
+                <h3 class="text-lg font-semibold mb-6">
+                    💬 Conversation
+                </h3>
+
+                @forelse($ticket->comments as $comment)
+                    <div class="mb-4 p-4 rounded-xl bg-gray-50">
+                        <div class="flex justify-between items-center mb-1">
+                            <strong class="text-gray-800">
+                                {{ $comment->user->name }}
+
+                                @if($comment->user->role === 'admin')
+                                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-red-100 text-red-700">
+                                        Admin
+                                    </span>
+                                @endif
+                            </strong>
+
+                            <span class="text-xs text-gray-500">
+                                {{ $comment->created_at->diffForHumans() }}
+                            </span>
+                        </div>
+
+                        <p class="text-gray-700">
+                            {{ $comment->comment }}
+                        </p>
+                    </div>
+                @empty
+                    <p class="text-sm text-gray-500">
+                        No comments yet.
+                    </p>
+                @endforelse
+            </div>
+
+            <!-- ================= ADD COMMENT ================= -->
+            <div class="bg-white shadow-lg rounded-2xl p-8">
+                <h3 class="text-lg font-semibold mb-4">
+                    ✍️ Add a Reply
+                </h3>
+
+                <form method="POST" action="{{ route('tickets.comments.store', $ticket) }}">
+    @csrf
+
+    <textarea
+        name="body"
+        rows="3"
+        required
+        class="w-full rounded-lg border-gray-300"
+    ></textarea>
+
+    <button type="submit">Send Reply</button>
+</form>
 
             </div>
+
         </div>
     </div>
 </x-app-layout>
