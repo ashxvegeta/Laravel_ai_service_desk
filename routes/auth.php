@@ -75,4 +75,5 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // admin view all tickets
     Route::get('/admin/tickets',[TicketController::class,'index'])->name('admin.index');
     Route::put('/tickets/{ticket}',[TicketController::class,'update'])->name('tickets.update');
+    Route::post('/tickets/{ticket}/comments',[CommentController::class,'store'])->name('comments.store');
 });
