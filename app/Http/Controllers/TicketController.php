@@ -47,6 +47,8 @@ class TicketController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+        $ticket->load('comments.user');
+
         return view('tickets.show', compact('ticket'));
     }
 

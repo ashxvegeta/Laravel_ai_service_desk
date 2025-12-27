@@ -58,33 +58,29 @@
                     💬 Conversation
                 </h3>
 
-                @forelse($ticket->comments as $comment)
-                    <div class="mb-4 p-4 rounded-xl bg-gray-50">
-                        <div class="flex justify-between items-center mb-1">
-                            <strong class="text-gray-800">
-                                {{ $comment->user->name }}
+            @foreach($ticket->comments as $comment)
+    <div class="mb-4 p-4 rounded-xl bg-gray-50">
 
-                                @if($comment->user->role === 'admin')
-                                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-red-100 text-red-700">
-                                        Admin
-                                    </span>
-                                @endif
-                            </strong>
+        <div class="flex justify-between items-center mb-1">
+            <strong>
+                {{ $comment->user->name }}
 
-                            <span class="text-xs text-gray-500">
-                                {{ $comment->created_at->diffForHumans() }}
-                            </span>
-                        </div>
+                @if($comment->user->role === 'admin')
+                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-red-100 text-red-700">
+                        Admin
+                    </span>
+                @endif
+            </strong>
 
-                        <p class="text-gray-700">
-                            {{ $comment->comment }}
-                        </p>
-                    </div>
-                @empty
-                    <p class="text-sm text-gray-500">
-                        No comments yet.
-                    </p>
-                @endforelse
+            <span class="text-xs text-gray-500">
+                {{ $comment->created_at->diffForHumans() }}
+            </span>
+        </div>
+
+        <p>{{ $comment->body }}</p>
+    </div>
+@endforeach
+
             </div>
 
             <!-- ================= ADD COMMENT ================= -->
@@ -103,7 +99,7 @@
         class="w-full rounded-lg border-gray-300"
     ></textarea>
 
-    <button type="submit">Send Reply</button>
+    <button type="submit"> 🚀 Send Reply</button>
 </form>
 
             </div>
