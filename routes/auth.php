@@ -71,6 +71,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/tickets/{ticket}/comments',[CommentController::class,'store'])->name('tickets.comments.store');
 
+    Route::get('/notifications', function(){
+        return view('notification');
+    });
+
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
