@@ -23,7 +23,19 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div class="mr-2"><a href="{{url('/notifications')}}">🔔</a></div>
+                            <div class="mr-2"><a href="{{ url('/notifications') }}" class="relative mr-3">
+        <span class="text-xl">🔔</span>
+
+        @if(auth()->user()->unreadNotifications->count())
+            <span
+                class="absolute -top-1 -right-1 inline-flex items-center justify-center
+                       px-1.5 py-0.5 text-xs font-bold leading-none
+                       text-white bg-red-600 rounded-full"
+            >
+                {{ auth()->user()->unreadNotifications->count() }}
+            </span>
+        @endif
+    </a></div>
                         <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
