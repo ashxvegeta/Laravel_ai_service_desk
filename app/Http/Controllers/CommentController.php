@@ -26,7 +26,16 @@ class CommentController extends Controller
         'body' => $request->body,
     ]);
 
-    return back();
-}
+    if(auth()->user()->role === 'admin'){
+        // notify ticket owner about new comment
+       $ticket->user->notify(new TicketCommented($ticket, $comment));
+    }else{
+        // notify all admins about new comment
+        User::where('role', 'admin')->each(function($admin) use ($ticket, $comment) {
+            $admin->notify(new TicketCommented($ticket, $comment));
+        });
+    }
 
+    return redirect()->back()->with('success', 'Comment added successfully.');
+}
 }
