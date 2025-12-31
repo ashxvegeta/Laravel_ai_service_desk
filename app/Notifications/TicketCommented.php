@@ -15,7 +15,7 @@ use Illuminate\Notifications\Notification;
 
 
 
-class TicketCommented extends Notification
+class TicketCommented extends Notification implements ShouldQueue
 {
     // This notification can be queued, so emails don’t slow your app.
     use Queueable;
