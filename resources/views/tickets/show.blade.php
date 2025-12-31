@@ -99,7 +99,7 @@
         class="w-full rounded-lg border-gray-300"
     ></textarea>
 
-    <button type="submit"> 🚀 Send Reply</button>
+    <button type="submit" class="inline-flex items-center px-5 py-2 mt-4 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition"> 🚀 Send Reply</button>
 </form>
 
             </div>
