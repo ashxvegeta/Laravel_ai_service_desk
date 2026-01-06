@@ -22,5 +22,29 @@ class AiTicketAssistant
         return  $this->askAi($question, $context);
     }
 
-    
+     /**
+     * Generate embedding vector
+     */
+    protected function embed(string $text): array{
+         // TODO: OpenAI / local embedding call
+        return [];
+    }
+
+    /**
+     * Search relevant chunks using vector similarity
+     */
+
+    protected function searchRelevant(array $embedding):Collection{
+        // TODO: Vector similarity search in DB
+        return collect();
+    }
+
+    /**
+     * Search relevant chunks using vector similarity
+     */
+
+    protected function askAi(string $question, string $context): string{
+        // TODO: Call OpenAI / local LLM with context
+        return "";
+    }
 }
