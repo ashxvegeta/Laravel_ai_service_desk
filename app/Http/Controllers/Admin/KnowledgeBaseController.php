@@ -25,7 +25,7 @@ class KnowledgeBaseController extends Controller
         // extract text
         $parser =  new Parser();
         $pdf = $parser->parseFile(storage_path("app/{$path}"));
-        $text = $paf->getText();
+        $text = $$pdf->getText();
 
         // split text into chunks
         $chunks = $this->chunkText($text);
