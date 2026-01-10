@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Smalot\PdfParser\Parser;
 use App\Models\Embedding;
+use Illuminate\Support\Facades\Storage;
 
 class KnowledgeBaseController extends Controller
 {
@@ -16,16 +17,26 @@ class KnowledgeBaseController extends Controller
 
     //handle file upload
     public function store(Request $request){
+
         $request->validate([
              'pdf' => 'required|mimes:pdf|max:10240',
         ]);
 
         // path 
-        $path = $request->file('pdf')->store('knowledge_base_pdfs');
+        $path = $request->file('pdf')->store('knowledge_base_pdfs','private');
+
+           // absolute path (CORRECT)
+        $filePath = Storage::disk('private')->path($path);
+
+        if (!file_exists($filePath)) {
+            dd('File not found', $filePath);
+        }
+
+
         // extract text
         $parser =  new Parser();
-        $pdf = $parser->parseFile(storage_path("app/{$path}"));
-        $text = $$pdf->getText();
+        $pdf = $parser->parseFile($filePath);
+        $text = $pdf->getText();
 
         // split text into chunks
         $chunks = $this->chunkText($text);
