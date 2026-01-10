@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Smalot\PdfParser\Parser;
 use App\Models\Embedding;
 use Illuminate\Support\Facades\Storage;
+use App\Services\AiTicketAssistant;
 
 class KnowledgeBaseController extends Controller
 {
@@ -41,11 +42,13 @@ class KnowledgeBaseController extends Controller
         // split text into chunks
         $chunks = $this->chunkText($text);
 
+        $ai = app(AiTicketAssistant::class);
+
         // save chunks (embedding)
         foreach($chunks as $chunk){
             Embedding::create([
                 'content'=>$chunk,
-                'embedding' => [],
+                'embedding' => $ai->embed($chunk),
                 'source' => basename($path),
             
             ]);
