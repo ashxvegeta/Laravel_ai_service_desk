@@ -12,7 +12,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\CommentController;
-
+use App\Http\Controllers\Admin\KnowledgeBaseController;
 
 
 
@@ -82,5 +82,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // admin view all tickets
     Route::get('/admin/tickets',[TicketController::class,'index'])->name('admin.index');
     Route::put('/tickets/{ticket}',[TicketController::class,'update'])->name('tickets.update');
-    
+    Route::get('/admin/knowledge/upload',[KnowledgeBaseController::class,'create']);
+    Route::post('/admin/knowledge/upload',[KnowledgeBaseController::class,'store']);
 });
