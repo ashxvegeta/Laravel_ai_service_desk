@@ -27,7 +27,11 @@ class AiTicketAssistant
      */
     protected function embed(string $text): array{
          // TODO: OpenAI / local embedding call
-        return [];
+        $response = OpenAI::embeddings()->create([
+            'model' => 'text-embedding-3-small',
+            'input' => $text,
+        ]);
+        return $response->data[0]->embedding;
     }
 
     /**
