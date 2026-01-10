@@ -42,4 +42,29 @@ class KnowledgeBaseController extends Controller
         return redirect()->back()->with('success','Knowledge base updated successfully.');
 
     }
+
+     // split text into smaller chunks
+    protected function chunkText(string $text,int $size = 500): array{
+
+        $words = explode(' ',$text);
+        $chunks = [];
+        $current = ' ';
+        foreach($words as $word){
+            if(strlen($current)+strlen($word) < $size){
+                $current .= ' ' . $word;
+            }else{
+                $chunks[] = trim($current);
+                $current = $word;
+            }
+        }
+        if(!empty($current)){
+            $chunks[] = trim($current);
+        }
+        return $chunks;
+
+    }
+
+
+   
+
 }
