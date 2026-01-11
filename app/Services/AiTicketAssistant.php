@@ -31,6 +31,7 @@ class AiTicketAssistant
             'model' => 'text-embedding-3-small',
             'input' => $text,
         ]);
+        // Return the embedding vector
         return $response->data[0]->embedding;
     }
 
