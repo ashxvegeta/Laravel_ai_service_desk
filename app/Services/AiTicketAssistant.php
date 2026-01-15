@@ -56,10 +56,24 @@ class AiTicketAssistant
      * Search relevant chunks using vector similarity
      */
 
-    protected function searchRelevant(array $embedding):Collection{
-        // TODO: Vector similarity search in DB
-        return collect();
-    }
+            protected function searchRelevant(array $queryEmbedding): Collection
+        {
+            return Embedding::all()
+                ->map(function ($row) use ($queryEmbedding) {
+                    return [
+                        'content' => $row->content,
+                        'similarity' => $this->cosineSimilarity(
+                            $queryEmbedding,
+                            $row->embedding
+                        ),
+                    ];
+                })
+                ->sortByDesc('similarity')
+                ->filter(fn ($item) => $item['similarity'] > 0.75)
+                ->take(3)
+                ->values();
+        }
+
 
     /**
      * Search relevant chunks using vector similarity
