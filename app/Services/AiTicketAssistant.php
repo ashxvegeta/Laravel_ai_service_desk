@@ -3,6 +3,7 @@
 namespace App\Services;
 use OpenAI\Laravel\Facades\OpenAI;
 use App\Models\Embedding;
+use Illuminate\Support\Collection;
 
 class AiTicketAssistant
 {
@@ -34,6 +35,22 @@ class AiTicketAssistant
         // Return the embedding vector
         return $response->data[0]->embedding;
     }
+
+        protected function cosineSimilarity(array $a, array $b): float
+    {
+        $dot = 0.0;
+        $normA = 0.0;
+        $normB = 0.0;
+
+        foreach ($a as $i => $value) {
+            $dot += $value * $b[$i];
+            $normA += $value ** 2;
+            $normB += $b[$i] ** 2;
+        }
+
+        return $dot / (sqrt($normA) * sqrt($normB));
+    }
+
 
     /**
      * Search relevant chunks using vector similarity
