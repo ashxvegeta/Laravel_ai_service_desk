@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ticket;
+use App\Events\TicketCreated;
 
 class TicketController extends Controller
 {
@@ -33,6 +34,8 @@ class TicketController extends Controller
             'title' => $request->title,
             'description' => $request->description,
         ]);
+
+        event(new TicketCreated($ticket));
 
         return redirect()->back()->with('success', 'Ticket created successfully.');
     }
