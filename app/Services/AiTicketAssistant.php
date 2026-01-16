@@ -14,7 +14,8 @@ class AiTicketAssistant
         // find relevent knowledge chunks 
         $relevantChunks = $this->searchRelevant($queryEmbedding);
         //no knowlwedge found
-        if(empty($relevantChunks)){
+        // ✅ FIX IS HERE
+        if ($relevantChunks->isEmpty()) {
             return null;
         }
         //Build Ai context
@@ -77,10 +78,30 @@ class AiTicketAssistant
 
     /**
      * Search relevant chunks using vector similarity
-     */
+        */
 
-    protected function askAi(string $question, string $context): string{
-        // TODO: Call OpenAI / local LLM with context
-        return "";
+    protected function askAi(string $question, string $context): string
+    {
+        $response = OpenAI::chat()->create([
+            'model' => 'gpt-4o-mini',
+            'messages' => [
+                [
+                    'role' => 'system',
+                    'content' => 'You are a helpful support assistant. Answer ONLY using the provided knowledge base.'
+                ],
+                [
+                    'role' => 'system',
+                    'content' => "Knowledge Base:\n" . $context
+                ],
+                [
+                    'role' => 'user',
+                    'content' => $question
+                ],
+            ],
+            'temperature' => 0.2,
+        ]);
+
+        return $response->choices[0]->message->content;
     }
+
 }
