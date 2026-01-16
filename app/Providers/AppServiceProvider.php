@@ -3,22 +3,22 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
+use App\Events\TicketCreated;
+use App\Listeners\SendTicketToAi;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        Event::listen(
+            TicketCreated::class,
+            SendTicketToAi::class
+        );
     }
 }
