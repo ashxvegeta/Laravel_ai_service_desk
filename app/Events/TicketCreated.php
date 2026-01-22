@@ -23,6 +23,7 @@ class TicketCreated
      */
     public function __construct(Ticket $ticket)
     {
+        
         //
         $this->$ticket = $ticket;
     }

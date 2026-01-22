@@ -21,24 +21,27 @@ class TicketController extends Controller
     }
 
     // user create a ticket
-    public function store(Request $request){
-        // validate request
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+    ]);
 
-        // create ticket
-        Ticket::create([
-            'user_id' => auth()->id(),
-            'title' => $request->title,
-            'description' => $request->description,
-        ]);
+    // ✅ STORE TICKET IN VARIABLE
+    $ticket = Ticket::create([
+        'user_id' => auth()->id(),
+        'title' => $request->title,
+        'description' => $request->description,
+    ]);
 
-        event(new TicketCreated($ticket));
+    // ✅ PASS REAL TICKET OBJECT
+    event(new TicketCreated($ticket));
 
-        return redirect()->back()->with('success', 'Ticket created successfully.');
-    }
+    return redirect()->back()->with('success', 'Ticket created successfully.');
+}
+
+
 
     /**
      * User/Admin: View a single ticket

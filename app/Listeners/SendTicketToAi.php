@@ -22,6 +22,8 @@ class SendTicketToAi
      */
     public function handle(TicketCreated $event): void
     {
+
+    dd($event->ticket);
         //
         GenerateAiSuggestion::dispatch($event->ticket);
     }

@@ -14,7 +14,6 @@ class AiTicketAssistant
         // find relevent knowledge chunks 
         $relevantChunks = $this->searchRelevant($queryEmbedding);
         //no knowlwedge found
-        // ✅ FIX IS HERE
         if ($relevantChunks->isEmpty()) {
             return null;
         }
