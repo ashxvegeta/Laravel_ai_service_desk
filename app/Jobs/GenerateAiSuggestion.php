@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\Ticket;
-use App\Models\Comment;
 use App\Services\AiTicketAssistant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,36 +12,29 @@ use Illuminate\Queue\SerializesModels;
 
 class GenerateAiSuggestion implements ShouldQueue
 {
-    use Queueable, Dispatchable, InteractsWithQueue, SerializesModels;
-
-    /**
-     * Create a new job instance.
-     */
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public Ticket $ticket;
-    
+
     public function __construct(Ticket $ticket)
     {
         $this->ticket = $ticket;
     }
 
-    /**
-     * Execute the job.
-     */
-    public function handle(): void
+    public function handle(AiTicketAssistant $ai)
     {
-        //
-
-        $answer = $ai->suggest($this->ticket->description);
-
-        if(!$answer){
-            return;
-        }
-        
-        Comment::create([
-            'ticket_id' => $this->ticket->id,
-            'user_id' => null, // AI
-            'body' => "🤖 AI Suggestion:\n\n" . $answer,
+        logger('AI JOB STARTED', [
+            'ticket_id' => $this->ticket->id
         ]);
+
+        $answer = $ai->suggest(
+            $this->ticket->title . "\n" . $this->ticket->description
+        );
+
+        if ($answer) {
+            $this->ticket->update([
+                'ai_suggestion' => $answer
+            ]);
+        }
     }
 }
